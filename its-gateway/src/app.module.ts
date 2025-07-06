@@ -12,6 +12,9 @@ PassportModule.register({ defaultStrategy: 'jwt' }),
 @Module({
   controllers: [AppController],
   imports: [
+    AuthModule,
+    ProductModule,
+    FacturaModule,
     ClientsModule.register([
       {
         name: 'MS_USER',
@@ -20,9 +23,23 @@ PassportModule.register({ defaultStrategy: 'jwt' }),
           host: envs.MS_USER_HOST,
           port: envs.MS_USER_PORT,
         },
+        {
+          name: 'USERS_SERVICE',
+          transport: Transport.TCP,
+          options: { host: 'localhost', port: 4001 },
+        },
+        {
+          name: 'PRODUCTS_SERVICE',
+          transport: Transport.TCP,
+          options: { host: 'localhost', port: 4002 },
+        },
+        {
+          name: 'FACTURAS_SERVICE',
+          transport: Transport.TCP,
+          options: { host: 'localhost', port: 4003 },
+        },
       },
     ]),
-    FacturaModule,
   ],
 })
 export class AppModule {}

@@ -1,8 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import * as jwt from 'jsonwebtoken';
+import { PrismaService } from './prisma.service';
 
 @Injectable()
 export class AppService {
-  getHello(): any {
-    return { message: 'Hello World!' };
+  constructor(private prisma: PrismaService) {}
+
+  async login({ username, password }: { username: string; password: string }) {
+    const user = await this.prisma.usuarios_table.findFirst({
+      where: { username, password },
+    });
+    if (!user) throw new UnauthorizedException();
+    const token = jwt.sign({ userId: user.id, role: user.role }, 'JWT_SECRET', {
+      expiresIn: '1h',
+    });
+    return { token };
+  }
+
+  async verifyToken(token: string) {
+    try {
+      return jwt.verify(token, 'JWT_SECRET');
+    } catch {
+      throw new UnauthorizedException();
+    }
+  }
+
+  async validateUser(payload: { userId: number }) {
+    return this.prisma.usuarios_table.findUnique({
+      where: { id: payload.userId },
+    });
+  }
+
+  async addToCart(data: {
+    userId: number;
+    productId: number;
+    quantity: number;
+  }) {
+    return this.prisma.cart.create({ data });
   }
 }
