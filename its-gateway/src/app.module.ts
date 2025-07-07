@@ -15,14 +15,14 @@ PassportModule.register({ defaultStrategy: 'jwt' }),
     AuthModule,
     ProductModule,
     FacturaModule,
-    ClientsModule.register([
-      {
-        name: 'MS_USER',
-        transport: Transport.TCP,
-        options: {
-          host: envs.MS_USER_HOST,
-          port: envs.MS_USER_PORT,
-        },
+        ClientsModule.register([
+            {
+              name: 'MS_USER',
+              transport: Transport.TCP,
+              options: {
+                host: envs.MS_USER_HOST,
+                port: envs.MS_USER_PORT,
+              },
         {
           name: 'USERS_SERVICE',
           transport: Transport.TCP,
@@ -41,5 +41,6 @@ PassportModule.register({ defaultStrategy: 'jwt' }),
       },
     ]),
   ],
+  providers: [JwtStrategy],
 })
 export class AppModule {}

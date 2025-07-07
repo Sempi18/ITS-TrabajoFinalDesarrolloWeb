@@ -1,10 +1,14 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, Min } from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
   @IsNotEmpty()
-  name: string;
+  public name: string;
 
-  @IsString()
-  description: string;
+  @IsNumber({
+    maxDecimalPlaces: 6,
+  })
+  @Min(0)
+  @Type (() => Number)
+  public price: string;
 }
