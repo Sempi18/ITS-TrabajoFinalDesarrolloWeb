@@ -5,15 +5,21 @@ dotenv.config();
 
 interface EnvVars {
   PORT: number;
-  MS_USER_HOST: string;
-  MS_USER_PORT: number;
+  USER_CLIENT_HOST: string;
+  USER_CLIENT_PORT: number;
+  FACTURA_SERVICE_HOST: string;
+  FACTURA_SERVICE_PORT: number;
+  JWT_SECRET: string;
 }
 
 const envsSchema = joi
   .object({
     PORT: joi.number().required(),
-    MS_USER_HOST: joi.string().required(),
-    MS_USER_PORT: joi.number().required(),
+    USER_CLIENT_HOST: joi.string().required(),
+    USER_CLIENT_PORT: joi.number().required(),
+    FACTURA_SERVICE_HOST: joi.string().required(),
+    FACTURA_SERVICE_PORT: joi.number().required(),
+    JWT_SECRET: joi.string().required(),
   })
   .unknown(true);
 
@@ -25,6 +31,9 @@ const envVars: EnvVars = value;
 
 export const envs = {
   PORT: envVars.PORT,
-  MS_USER_HOST: envVars.MS_USER_HOST,
-  MS_USER_PORT: envVars.MS_USER_PORT,
+  USER_CLIENT_HOST: envVars.USER_CLIENT_HOST,
+  USER_CLIENT_PORT: envVars.USER_CLIENT_PORT,
+  FACTURA_SERVICE_HOST: envVars.FACTURA_SERVICE_HOST,
+  FACTURA_SERVICE_PORT: envVars.FACTURA_SERVICE_PORT,
+  JWT_SECRET: envVars.JWT_SECRET,
 };

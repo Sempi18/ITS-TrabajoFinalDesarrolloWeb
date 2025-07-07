@@ -1,22 +1,40 @@
-
-// ... imports
-import { JwtStrategy } from './auth/jwt.strategy';
+import { Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { JwtAuthGuard } from './guards/jwt.guard';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    // ... otros modulos
+    ConfigModule.forRoot(),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || '1234567890',
+      signOptions: { expiresIn: '1h' },
+    }),
+    ClientsModule.register([
+      {
+        name: 'USER_CLIENT',
+        transport: Transport.TCP,
+        options: {
+          host: process.env.USER_CLIENT_HOST || 'localhost',
+          port: parseInt(process.env.USER_CLIENT_PORT || '3001', 10),
+        },
+      },
+      {
+        name: 'FACTURA_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: process.env.FACTURA_SERVICE_HOST || 'localhost',
+          port: parseInt(process.env.FACTURA_SERVICE_PORT || '3002', 10),
+        },
+      },
+    ]),
   ],
-  controllers: [AppController, ProductosController, FacturasController, UsuariosController],
-  providers: [
-    AppService,
-    JwtStrategy, // Añadir la estrategia
-    {
-      provide: 'USUARIOS_SERVICE',
-      // ... tu configuración de ClientProxy
-    },
-    // ... otros providers
-  ],
+  providers: [AuthService, JwtStrategy, JwtAuthGuard],
+  exports: [AuthService, JwtAuthGuard],
 })
-export class AppModule {}
+export class AuthModule {}
