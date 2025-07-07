@@ -1,0 +1,17 @@
+// This is your Prisma schema file,
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Facturas {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  nrofactura String?
+  usuarioId  String?
+}
