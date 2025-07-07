@@ -10,13 +10,12 @@ import {
 } from '@nestjs/common';
 import { CreateFacturaDto } from './dto/create-factura.dto';
 import { ClientProxy } from '@nestjs/microservices';
-import { error } from 'console';
 import { catchError } from 'rxjs';
 
 @Controller('factura')
 export class FacturaController {
   constructor(
-    @Inject('FACTURA_MICROSERVICE')
+    @Inject('FACTURAS_SERVICE')
     private readonly facturasClient: ClientProxy,
   ) {}
   @Post()

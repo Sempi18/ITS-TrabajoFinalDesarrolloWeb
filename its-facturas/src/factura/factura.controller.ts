@@ -10,18 +10,24 @@ export class FacturaController {
   @MessagePattern('createFactura')
   create(@Payload() createFacturaDto: CreateFacturaDto) {
     return this.facturaService.create(createFacturaDto).catch((error) => {
-      throw new RpcException({message: error,status: 400});
-   });
+      throw new RpcException({ message: error, status: 400 });
+    });
   }
 
   @MessagePattern('findAllFactura')
-  findAll() {
-    return this.facturaService.findAll();
+  async findAll() {
+    try {
+      return await this.facturaService.findAll();
+    } catch (error) {
+      console.error('Error en findAllFactura:', error);
+      throw new RpcException({ message: error.message || error, status: 500 });
+    }
   }
+
   @MessagePattern('findAllUserFactura')
-  findAllUser(@Payload() usuarioId: number) 
-  { return this.facturaService.findAllUser(usuarioId); 
-}
+  findAllUser(@Payload() usuarioId: string) {
+    return this.facturaService.findAllUser(usuarioId);
+  }
 
   @MessagePattern('findOneFactura')
   findOne(@Payload() id: string) {

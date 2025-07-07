@@ -5,11 +5,6 @@ import { ValidationPipe, Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  // Logger en vez de console.info para mejor práctica
-  const logger = new Logger('Bootstrap');
-  logger.log(`Gateway escuchando en el puerto: ${envs.PORT}`);
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // elimina propiedades no definidas en DTOs
@@ -19,5 +14,7 @@ async function bootstrap() {
   );
 
   await app.listen(envs.PORT);
+  const logger = new Logger('Main');
+  logger.log(`Gateway escuchando en el puerto: ${envs.PORT}`);
 }
 bootstrap();

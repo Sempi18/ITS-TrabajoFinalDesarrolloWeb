@@ -9,10 +9,18 @@ export class FacturaService {
     return this.prisma.facturas.create({ data: createFacturaDto });
   }
 
-  findAll() {
-    return this.prisma.facturas.findMany();
+  async findAll() {
+    try {
+      const facturas = await this.prisma.facturas.findMany();
+      console.log('Facturas obtenidas:', facturas);
+      return facturas;
+    } catch (error) {
+      console.error('Error en factura.service.findAll:', error);
+      throw error; // relanzar para que lo capture el controller
+    }
   }
-  findAllUser(usuarioId: number) {
+
+  findAllUser(usuarioId: string) {
     return this.prisma.facturas.findMany({ where: { usuarioId } });
   }
   findOne(id: string) {

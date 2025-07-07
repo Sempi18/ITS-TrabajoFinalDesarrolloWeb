@@ -6,14 +6,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
   controllers: [FacturaController],
   imports: [
     ClientsModule.register([
-    { 
-      name: "FACTURA_MICROSERVICE",
-      transport: Transport.TCP,
-      options: {
-        host: 'localhost',
-        port: 3001,
+      {
+        name: 'FACTURAS_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 3003,
+        },
       },
-      },
-  ])],
+    ]),
+  ],
 })
 export class FacturaModule {}

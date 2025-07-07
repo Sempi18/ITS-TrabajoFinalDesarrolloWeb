@@ -29,12 +29,15 @@ import { JwtStrategy } from './auth/strategies/jwt.strategy';
       {
         name: 'PRODUCTS_SERVICE',
         transport: Transport.TCP,
-        options: { host: 'localhost', port: 3002 },
+        options: { 
+          host: 'localhost', port: 3002 },
       },
       {
         name: 'FACTURAS_SERVICE',
         transport: Transport.TCP,
-        options: { host: 'localhost', port: 3003 },
+        options: { 
+          host: envs.FACTURA_SERVICE_HOST || 'localhost',
+          port: envs.FACTURA_SERVICE_PORT || 3003 },
       },
     ]),
     JwtModule.register({

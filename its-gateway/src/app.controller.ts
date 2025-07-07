@@ -7,6 +7,7 @@ import { throwError } from 'rxjs';
 export class AppController {
   constructor(
     @Inject('USER_CLIENT') private readonly userClient: ClientProxy,
+    @Inject('FACTURAS_SERVICE') private readonly facturasClient: ClientProxy,
   ) {}
 
   @Get()
@@ -14,6 +15,17 @@ export class AppController {
     return this.userClient.send('getHello', {}).pipe(
       catchError((err) => {
         const message = err?.message || 'Error en microservicio USER';
+        const status = err?.statusCode || 500;
+        return throwError(() => new HttpException(message, status));
+      }),
+    );
+  }
+
+  @Get('facturas')
+  getFacturas() {
+    return this.facturasClient.send('findAllFactura', {}).pipe(
+      catchError((err) => {
+        const message = err?.message || 'Error en microservicio FACTURAS';
         const status = err?.statusCode || 500;
         return throwError(() => new HttpException(message, status));
       }),

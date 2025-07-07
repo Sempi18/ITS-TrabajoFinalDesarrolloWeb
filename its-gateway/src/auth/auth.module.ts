@@ -25,11 +25,11 @@ import { AuthService } from './auth.service';
         },
       },
       {
-        name: 'FACTURA_SERVICE',
+        name: 'FACTURAS_SERVICE',
         transport: Transport.TCP,
         options: {
           host: process.env.FACTURA_SERVICE_HOST || 'localhost',
-          port: parseInt(process.env.FACTURA_SERVICE_PORT || '3002', 10),
+          port: parseInt(process.env.FACTURA_SERVICE_PORT || '3003', 10),
         },
       },
     ]),
