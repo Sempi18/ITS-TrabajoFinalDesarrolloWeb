@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import * as jwt from 'jsonwebtoken';
-import { PrismaService } from './prisma.service';
+import { PrismaService } from './prisma/prisma.service';
 
 @Injectable()
 export class AppService {
@@ -8,10 +8,10 @@ export class AppService {
 
   async login({ username, password }: { username: string; password: string }) {
     const user = await this.prisma.usuarios_table.findFirst({
-      where: { username, password },
+      where: { email: username, password },
     });
     if (!user) throw new UnauthorizedException();
-    const token = jwt.sign({ userId: user.id, role: user.role }, 'JWT_SECRET', {
+    const token = jwt.sign({ userId: user.id, role: user.rol }, 'JWT_SECRET', {
       expiresIn: '1h',
     });
     return { token };
